@@ -17,12 +17,15 @@ class ApiConstants {
       '/api/conversations/{conversation_id}/message';
   static const String feedbackEndpoint = '/api/messages/{message_id}/feedback';
   static const String speechEndpoint = '/api/messages/{message_id}/speech';
-  static const String voice_context = '/messages/{message_id}/voice_context';
+  static const String voice_context =
+      '/api/messages/{message_id}/voice_context';
+  static const String fallback_voice_context =
+      '/api/messages/{message_id}/fallback_voice_context';
 
   /// Image practice endpoints
   static const String imagesBaseEndpoint = '/api/images';
   static const String imagesPracticeEndpoint = '/api/images/practice';
-  static const String imageByIdEndpoint = '/api/images/{image_id}';
+  static const String imageByIdEndpoint = '/api/images/getimages/{image_id}';
   static const String imageFeedbackEndpoint = '/api/images/feedback';
 
   /// Audio processing endpoint

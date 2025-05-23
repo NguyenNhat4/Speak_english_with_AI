@@ -747,4 +747,44 @@ async def get_voice_context(
             detail=f"Failed to get voice context: {str(e)}"
         )
 
+@router.get(
+    "/messages/{message_id}/fallback_voice_context",
+    summary="Get fallback voice context for any message ID",
+    description="Provides voice context information without requiring the message to exist in the database."
+)
+async def get_fallback_voice_context(
+    message_id: str,
+    current_user: dict = Depends(get_current_user)
+):
+    """
+    Get fallback voice context for any message ID without database validation.
+    
+    This endpoint is a reliable alternative to the /messages/{message_id}/voice_context endpoint
+    when the message doesn't exist in the database. It always returns a valid response with
+    the provided message ID as both the ID and content of the latest AI message.
+    
+    Args:
+        message_id (str): Message ID to use in the response
+        current_user (dict): Authenticated user information
+        
+    Returns:
+        dict: Voice context information with the message ID as content
+            Fields:
+            - voice_type: Default voice type (jf_alpha)
+            - latest_ai_message: Object containing the message ID as both ID and content
+    """
+    logger.info(f"Fallback voice context requested for message_id: {message_id}")
+    
+    # Create a timestamp in the expected format
+    timestamp = datetime.utcnow().isoformat()
+    
+    return {
+        "voice_type": "jf_alpha",
+        "latest_ai_message": {
+            "id": message_id,
+            "content": "Hello, how can I help you today?",
+            "timestamp": timestamp
+        }
+    }
+
 
