@@ -37,6 +37,7 @@ import 'features/conversations/presentation/bloc/conversation_bloc.dart'; // Con
 import 'features/home/di/home_module.dart'; // Sets up home screen features
 import 'features/home/presentation/cubit/home_cubit.dart'; // Controls logic for home screen
 import 'features/authentication/presentation/bloc/auth_bloc.dart'; // Controls authentication logic
+import 'features/image_description/di/image_description_module.dart'; // Sets up image description features
 
 /// Application entry point - like the "main door" to our app
 /// The async keyword means this function can wait for tasks to complete
@@ -85,6 +86,7 @@ void main() async {
         Future(() => initAuthModule()),
         Future(() => initHomeModule()),
         Future(() => initConversationModule()),
+        Future(() => initImageDescriptionModule()),
       ]);
 
       // Start the app by creating the main widget

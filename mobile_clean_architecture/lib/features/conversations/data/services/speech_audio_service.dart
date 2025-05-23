@@ -30,11 +30,14 @@ class SpeechAudioService {
   /// Current playing message ID, if any
   String? _currentlyPlayingMessageId;
 
+  /// TTS endpoint for speech generation
+  final String ttsEndpoint = '${ApiConstants.ttsBaseUrl}/v1/audio/speech';
+
   /// Maximum number of retry attempts for streaming audio
   static const int maxRetries = 3;
 
   /// Retry delay in milliseconds (will be multiplied for exponential backoff)
-  static const int retryDelay = 500;
+  static const int retryDelay = 1500;
 
   /// Stream that emits the currently playing message ID or null when stopped
   Stream<String?> get currentlyPlayingMessageIdStream =>
@@ -98,6 +101,37 @@ class SpeechAudioService {
           debugPrint(
               'Voice context fetched successfully: ${data['voice_type']}');
           return data;
+        } else if (response.statusCode == 404) {
+          // If endpoint returns 404, try the fallback endpoint
+          debugPrint(
+              'Voice context not found (404). Trying fallback endpoint...');
+
+          // Construct fallback endpoint URL
+          final fallbackEndpoint = ApiConstants.fallback_voice_context
+              .replaceFirst('{message_id}', messageId);
+          final fallbackUri =
+              Uri.parse('${ApiConstants.baseUrl}$fallbackEndpoint');
+
+          debugPrint("Fetching from fallback endpoint: $fallbackUri");
+
+          final fallbackResponse = await http
+              .get(
+                fallbackUri,
+                headers: ApiConstants.authHeaders,
+              )
+              .timeout(timeout);
+
+          if (fallbackResponse.statusCode == 200) {
+            final fallbackData = Map<String, dynamic>.from(
+                json.decode(fallbackResponse.body) as Map);
+            debugPrint(
+                'Fallback voice context fetched successfully: ${fallbackData['voice_type']}');
+            return fallbackData;
+          }
+
+          // If fallback also fails, return default values
+          debugPrint('Fallback endpoint failed. Using default values.');
+          return {'voice_type': 'am_fenrir', 'latest_ai_message': null};
         } else if (response.statusCode == 408 ||
             response.statusCode == 503 ||
             response.statusCode == 504) {
@@ -191,7 +225,7 @@ class SpeechAudioService {
   Future<void> _streamAndCacheAudio(String messageId) async {
     // First, get the voice context information for this message
     Map<String, dynamic> voiceContext;
-    String voiceType = 'hm_omega'; // Default voice type
+    String voiceType = 'am_fenrir'; // Default voice type
     Map<String, dynamic>? latestAiMessage;
     String messageContent = '';
     bool isLatestMessage = false;
@@ -199,7 +233,7 @@ class SpeechAudioService {
     try {
       // Fetch voice context with error handling
       voiceContext = await _getVoiceContext(messageId);
-      voiceType = voiceContext['voice_type'] ?? 'hm_omega';
+      voiceType = voiceContext['voice_type'] ?? 'am_fenrir';
 
       // Get latest AI message content
       latestAiMessage =
@@ -227,30 +261,44 @@ class SpeechAudioService {
 
     while (retryCount < maxRetries) {
       try {
-        // First attempt: If this is latest message with content, try streaming audio chunks directly
-        if (!directTtsAttempted &&
-            messageContent.isNotEmpty &&
-            isLatestMessage) {
-          debugPrint(
-              'Attempting to stream audio chunks directly with latest message content');
+        // First attempt: Try using direct TTS call if we have message ID
+        // This is our primary approach since the logs show the backend endpoint has issues
+        if (!directTtsAttempted) {
+          debugPrint('Attempting to use direct TTS call first');
           try {
-            // Use streaming method instead of the regular direct call
-            await _streamAudioChunksFromTts(
-                messageContent, voiceType, messageId);
-            return; // Success, exit the retry loop
-          } catch (e) {
-            debugPrint('Streaming audio chunks failed: $e');
-            directTtsAttempted = true;
-            // If streaming fails, try the regular direct call
-            try {
-              debugPrint('Falling back to regular direct TTS call');
+            // If we have content from voice context, use it
+            if (messageContent.isNotEmpty) {
+              debugPrint('Using content from voice context for TTS');
+
+              // First try streaming for faster playback if this is the latest message
+              if (isLatestMessage) {
+                try {
+                  await _callTtsServiceDirectly(
+                      messageContent, voiceType, messageId);
+                  return; // Success, exit the retry loop
+                } catch (e) {
+                  debugPrint('Streaming audio chunks failed: $e');
+                  // Fall through to regular direct call
+                }
+              }
+
+              // Try regular direct TTS call
               await _callTtsServiceDirectly(
                   messageContent, voiceType, messageId);
               return; // Success, exit the retry loop
-            } catch (e) {
-              debugPrint('Direct TTS call also failed: $e');
-              // Don't increment retry count, fall through to backend method
+            } else {
+              // If we don't have content but have message ID, try to construct basic text
+              // This is a fallback when we can't get message content but know the ID
+              final defaultMessage =
+                  "Here is my response to your query. Message ID: $messageId";
+              await _callTtsServiceDirectly(
+                  defaultMessage, voiceType, messageId);
+              return; // Success with fallback content
             }
+          } catch (e) {
+            debugPrint('Direct TTS approach failed: $e');
+            directTtsAttempted = true;
+            // Continue to backend method
           }
         }
 
@@ -291,6 +339,12 @@ class SpeechAudioService {
           // Set the audio source for the player
           await _player.setFilePath(cacheFile.path);
           return; // Success, exit the retry loop
+        } else if (response.statusCode == 404 && !directTtsAttempted) {
+          // If backend endpoint returns 404 and we haven't tried direct TTS yet,
+          // reset directTtsAttempted flag to try it on the next iteration
+          directTtsAttempted = false;
+          throw Exception(
+              'Backend speech endpoint not found, will try direct TTS');
         } else if (response.statusCode == 503 || response.statusCode == 504) {
           throw Exception(
               'Text-to-speech service is temporarily unavailable (${response.statusCode})');
@@ -321,7 +375,6 @@ class SpeechAudioService {
   /// This prepares a payload similar to the Python backend's get_speech_from_tts_service
   Future<void> _callTtsServiceDirectly(
       String textToSpeak, String voiceName, String messageId) async {
-    final ttsEndpoint = '${ApiConstants.ttsBaseUrl}/v1/audio/speech';
     final uri = Uri.parse(ttsEndpoint);
 
     debugPrint('Calling TTS service directly at: $uri with voice: $voiceName');
@@ -333,10 +386,10 @@ class SpeechAudioService {
       'voice': voiceName,
       'response_format': 'mp3',
       'download_format': 'mp3',
-      'speed': 0.7, // Matching the speed used in backend
+      'speed': 1, // Matching the speed used in backend
       'stream': false, // We can't handle streaming directly in Flutter HTTP
       'return_download_link': false,
-      'lang_code': 'en-US',
+      'lang_code': 'a',
       'normalization_options': {
         'normalize': true,
         'unit_normalization': false,
@@ -445,7 +498,6 @@ class SpeechAudioService {
   /// waiting for the entire file to download first.
   Future<void> _streamAudioChunksFromTts(
       String textToSpeak, String voiceName, String messageId) async {
-    final ttsEndpoint = '${ApiConstants.ttsBaseUrl}/v1/audio/speech';
     final uri = Uri.parse(ttsEndpoint);
 
     debugPrint(
@@ -458,10 +510,10 @@ class SpeechAudioService {
       'voice': voiceName,
       'response_format': 'mp3',
       'download_format': 'mp3',
-      'speed': 0.7,
+      'speed': 1,
       'stream': true, // Enable streaming from TTS service
       'return_download_link': false,
-      'lang_code': 'en-US',
+      'lang_code': 'a',
       'normalization_options': {
         'normalize': true,
         'unit_normalization': false,

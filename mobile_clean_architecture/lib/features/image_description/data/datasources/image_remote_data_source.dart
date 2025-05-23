@@ -27,23 +27,46 @@ class ImageRemoteDataSourceImpl implements ImageRemoteDataSource {
   @override
   Future<List<ImageModel>> getPracticeImages() async {
     try {
+      final endpoint = '/api/images/practice';
+      print(
+          'DEBUG: Fetching practice images from ${ApiConstants.baseUrl + endpoint}');
+
+      // Use headers without authentication for this public endpoint
+      final headers = {
+        'Content-Type': 'application/json',
+      };
+
+      print('DEBUG: Headers: $headers');
+
       final response = await client
           .get(
-            Uri.parse(
-                ApiConstants.baseUrl + ApiConstants.imagesPracticeEndpoint),
-            headers: ApiConstants.authHeaders,
+            Uri.parse(ApiConstants.baseUrl + endpoint),
+            headers: headers,
           )
           .timeout(const Duration(seconds: ApiConstants.timeoutDuration));
 
-      if (response.statusCode != 200) {
+      print('DEBUG: Response status code: ${response.statusCode}');
+
+      if (response.statusCode == 200) {
+        print('DEBUG: Response received successfully');
+        try {
+          final List<dynamic> jsonData = json.decode(response.body);
+          print('DEBUG: Parsed ${jsonData.length} images');
+          return jsonData.map((json) => ImageModel.fromJson(json)).toList();
+        } catch (parseError) {
+          print('DEBUG: JSON parse error: $parseError');
+          throw ServerException(
+              message: 'Failed to parse practice images response: $parseError');
+        }
+      } else {
+        print('DEBUG: Error response: ${response.body}');
         throw ServerException(
-            message: 'Failed to load practice images',
+            message:
+                'Failed to load practice images: Status ${response.statusCode}',
             statusCode: response.statusCode);
       }
-
-      final List<dynamic> jsonData = json.decode(response.body);
-      return jsonData.map((json) => ImageModel.fromJson(json)).toList();
     } catch (e) {
+      print('DEBUG: Exception while loading practice images: $e');
       throw ServerException(
           message: 'Failed to load practice images: ${e.toString()}');
     }
@@ -51,10 +74,10 @@ class ImageRemoteDataSourceImpl implements ImageRemoteDataSource {
 
   @override
   Future<String> getImageUrl(String imageId) async {
-    // Since we're fetching an actual image file, we'll return the URL to be used
-    // in an Image widget rather than fetching the binary data here
-    return ApiConstants.baseUrl +
-        ApiConstants.imageByIdEndpoint.replaceFirst('{image_id}', imageId);
+    // Use the FileResponse endpoint which properly serves images
+    final imageUrl = '${ApiConstants.baseUrl}/api/images/getimages/$imageId';
+    print('DEBUG: Generated FileResponse URL for ID $imageId: $imageUrl');
+    return imageUrl;
   }
 
   @override

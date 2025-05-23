@@ -10,7 +10,7 @@ from app.utils.image_description import get_image_description
 from app.utils.gemini import generate_response
 from pydantic import BaseModel
 
-router = APIRouter(prefix="/images", tags=["images"])
+router = APIRouter()
 # i want to prototype this feature quickly so use  json file to store record
 # Get the absolute paths
 IMAGES_DIR = Path(__file__).parent.parent / "uploads" / "images"
@@ -56,7 +56,7 @@ def save_feedback_data(feedback_data: List[Dict]):
         json.dump(feedback_data, f, indent=2)
 
 
-@router.get("/practice", response_model=List[dict])
+@router.get("/images/practice", response_model=List[dict])
 async def get_practice_images():
     """
     Returns a list of practice images with IDs and URLs
@@ -110,7 +110,7 @@ async def get_practice_images():
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-@router.get("/{image_id}")
+@router.get("/images/getimages/{image_id}")
 async def get_image_by_id(image_id: str):
     """
     Returns the actual image file by its ID
@@ -144,7 +144,7 @@ async def get_image_by_id(image_id: str):
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@router.post("/feedback", response_model=ImageFeedbackResponse)
+@router.post("/images/feedback", response_model=ImageFeedbackResponse)
 async def provide_feedback(feedback_request: ImageFeedbackRequest):
     """
     Accepts user feedback on image description and returns an improved version

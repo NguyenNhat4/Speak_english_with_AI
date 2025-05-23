@@ -2,12 +2,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:mobile_clean_architecture/core/error/failures.dart';
 import 'package:mobile_clean_architecture/core/usecases/usecase.dart';
+import 'package:mobile_clean_architecture/core/constants/api_constants.dart';
 import 'package:mobile_clean_architecture/features/image_description/domain/entities/feedback_entity.dart';
 import 'package:mobile_clean_architecture/features/image_description/domain/entities/image_entity.dart';
 import 'package:mobile_clean_architecture/features/image_description/domain/usecases/get_image_feedback.dart';
 import 'package:mobile_clean_architecture/features/image_description/domain/usecases/get_image_url.dart';
 import 'package:mobile_clean_architecture/features/image_description/domain/usecases/get_practice_images.dart';
 import '../../data/services/audio_recording_service.dart';
+import 'package:http/http.dart' as http;
 
 part 'image_description_state.dart';
 
@@ -29,27 +31,91 @@ class ImageDescriptionCubit extends Cubit<ImageDescriptionState> {
 
   /// Fetches all practice images from the server
   Future<void> loadPracticeImages() async {
+    print('DEBUG: Starting to load practice images...');
     emit(const ImageDescriptionLoading());
+
+    // Test network connectivity first
+    print('DEBUG: Testing network connectivity...');
+    final networkOk = await testNetworkConnectivity();
+    if (!networkOk) {
+      print('DEBUG: Network connectivity test failed');
+      emit(const ImageDescriptionError('Network connection failed. Please check if backend is running and accessible.'));
+      return;
+    }
+    print('DEBUG: Network connectivity test passed');
 
     final result = await getPracticeImages(NoParams());
 
     result.fold(
-      (failure) => emit(ImageDescriptionError(_mapFailureToMessage(failure))),
-      (images) => emit(ImageDescriptionLoaded(images)),
+      (failure) {
+        print('DEBUG: Failed to load practice images: ${_mapFailureToMessage(failure)}');
+        emit(ImageDescriptionError(_mapFailureToMessage(failure)));
+      },
+      (images) {
+        print('DEBUG: Successfully loaded ${images.length} practice images');
+        for (int i = 0; i < images.length && i < 3; i++) {
+          print('DEBUG: Image $i - ID: ${images[i].id}, Name: ${images[i].name}');
+        }
+        emit(ImageDescriptionLoaded(images));
+      },
     );
+  }
+
+  /// Test network connectivity to the backend
+  Future<bool> testNetworkConnectivity() async {
+    try {
+      final response = await http.get(
+        Uri.parse('${ApiConstants.baseUrl}/'),
+        headers: {'Content-Type': 'application/json'},
+      ).timeout(const Duration(seconds: 5));
+      
+      print('DEBUG: Network test - Status: ${response.statusCode}');
+      return response.statusCode == 200;
+    } catch (e) {
+      print('DEBUG: Network test failed: $e');
+      return false;
+    }
   }
 
   /// Gets image URL for a specific image ID
   Future<String?> getImageUrlById(String imageId) async {
-    final result = await getImageUrl(ImageParams(imageId: imageId));
+    // First, get images from state
+    List<ImageEntity> images = [];
+    if (state is ImageDescriptionLoaded) {
+      images = (state as ImageDescriptionLoaded).images;
+    } else if (state is ImageRecordingStarted) {
+      images = (state as ImageRecordingStarted).images;
+    } else if (state is ImageTranscriptionProcessing) {
+      images = (state as ImageTranscriptionProcessing).images;
+    } else if (state is ImageTranscriptionCompleted) {
+      images = (state as ImageTranscriptionCompleted).images;
+    } else if (state is ImageFeedbackReceived) {
+      images = (state as ImageFeedbackReceived).images;
+    }
 
-    return result.fold(
-      (failure) {
-        emit(ImageDescriptionError(_mapFailureToMessage(failure)));
-        return null;
-      },
-      (imageUrl) => imageUrl,
-    );
+    // Try to find the image directly in loaded images first
+    ImageEntity? foundImage;
+    try {
+      foundImage = images.firstWhere((img) => img.id == imageId);
+    } catch (e) {
+      print('DEBUG: Image not found in loaded images, using API endpoint');
+      foundImage = null;
+    }
+
+    // Clean imageId to ensure we don't have path prefixes
+    String cleanId = imageId;
+    if (imageId.contains('/')) {
+      cleanId = imageId.split('/').last;
+    }
+
+    // Always use the get_image_by_id endpoint which returns FileResponse
+    final apiUrl = '${ApiConstants.baseUrl}/api/images/getimages/$imageId';
+    print('DEBUG: Using get_image_by_id endpoint: $apiUrl');
+    print('DEBUG: Image found in loaded data: ${foundImage != null}');
+    if (foundImage != null) {
+      print('DEBUG: Found image name: ${foundImage!.name}');
+    }
+    return apiUrl;
   }
 
   /// Starts audio recording for image description

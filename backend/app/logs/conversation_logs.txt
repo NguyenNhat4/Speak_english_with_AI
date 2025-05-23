@@ -194,3 +194,213 @@ Refined response: {
   "refined_situation": "The patient is experiencing hemorrhoids due to prolonged sitting while coding.",
   "response": "Hello. Welcome. I see you're here because you're having some trouble. Can you tell me more about what's happening?"
 }
+Getting AI message audio stream for message_id: 6830a469c3f901a810a34d52
+Time taken to fetch message and conversation: 0.10543322563171387 seconds
+Getting AI message audio stream for message_id: 6830a469c3f901a810a34d52
+Time taken to fetch message and conversation: 0.0727529525756836 seconds
+Getting AI message audio stream for message_id: 6830a469c3f901a810a34d52
+Time taken to fetch message and conversation: 0.0735328197479248 seconds
+Getting AI message audio stream for message_id: 6830a469c3f901a810a34d52
+Time taken to fetch message and conversation: 0.07217979431152344 seconds
+Getting AI message audio stream for message_id: 6830a469c3f901a810a34d52
+Time taken to fetch message and conversation: 0.0752718448638916 seconds
+Getting AI message audio stream for message_id: 6830a469c3f901a810a34d52
+Time taken to fetch message and conversation: 0.07136011123657227 seconds
+Getting AI message audio stream for message_id: 6830a469c3f901a810a34d52
+Time taken to fetch message and conversation: 0.053467512130737305 seconds
+Getting AI message audio stream for message_id: 6830a469c3f901a810a34d52
+Time taken to fetch message and conversation: 0.05270528793334961 seconds
+Getting AI message audio stream for message_id: 6830a469c3f901a810a34d52
+Time taken to fetch message and conversation: 0.0521237850189209 seconds
+Getting AI message audio stream for message_id: 6830a469c3f901a810a34d52
+Time taken to fetch message and conversation: 0.05282425880432129 seconds
+Getting AI message audio stream for message_id: 6830a469c3f901a810a34d52
+Time taken to fetch message and conversation: 0.06429672241210938 seconds
+Getting AI message audio stream for message_id: 6830a469c3f901a810a34d52
+Time taken to fetch message and conversation: 0.05895066261291504 seconds
+Getting AI message audio stream for message_id: 6830a469c3f901a810a34d52
+Time taken to fetch message and conversation: 0.06227827072143555 seconds
+Getting AI message audio stream for message_id: 6830a469c3f901a810a34d52
+Time taken to fetch message and conversation: 0.053070783615112305 seconds
+Getting AI message audio stream for message_id: 6830a469c3f901a810a34d52
+Time taken to fetch message and conversation: 0.05585002899169922 seconds
+Getting AI message audio stream for message_id: 6830a469c3f901a810a34d52
+Time taken to fetch message and conversation: 0.052855491638183594 seconds
+Getting AI message audio stream for message_id: 6830a469c3f901a810a34d52
+Time taken to fetch message and conversation: 0.07232093811035156 seconds
+Getting AI message audio stream for message_id: 6830a469c3f901a810a34d52
+Time taken to fetch message and conversation: 0.07138609886169434 seconds
+Getting AI message audio stream for message_id: 6830a469c3f901a810a34d52
+Time taken to fetch message and conversation: 0.07197713851928711 seconds
+Getting AI message audio stream for message_id: 6830a469c3f901a810a34d52
+Time taken to fetch message and conversation: 0.07822489738464355 seconds
+Getting AI message audio stream for message_id: 6830a469c3f901a810a34d52
+Time taken to fetch message and conversation: 0.07567143440246582 seconds
+Getting AI message audio stream for message_id: 6830a488c3f901a810a34d54
+Time taken to fetch message and conversation: 0.053044795989990234 seconds
+Getting AI message audio stream for message_id: 6830a488c3f901a810a34d54
+Time taken to fetch message and conversation: 0.05382895469665527 seconds
+Getting AI message audio stream for message_id: 6830a488c3f901a810a34d54
+Time taken to fetch message and conversation: 0.05157899856567383 seconds
+Getting AI message audio stream for message_id: 6830a488c3f901a810a34d54
+Time taken to fetch message and conversation: 0.054413557052612305 seconds
+Getting AI message audio stream for message_id: 6830a488c3f901a810a34d54
+Time taken to fetch message and conversation: 0.05629372596740723 seconds
+Getting AI message audio stream for message_id: 6830a488c3f901a810a34d54
+Time taken to fetch message and conversation: 0.06504082679748535 seconds
+Getting AI message audio stream for message_id: 6830a488c3f901a810a34d54
+Time taken to fetch message and conversation: 0.055587053298950195 seconds
+Getting AI message audio stream for message_id: 6830a488c3f901a810a34d54
+Time taken to fetch message and conversation: 0.055460453033447266 seconds
+Getting AI message audio stream for message_id: 6830a488c3f901a810a34d54
+Time taken to fetch message and conversation: 0.05078840255737305 seconds
+Getting AI message audio stream for message_id: 6830a488c3f901a810a34d54
+Time taken to fetch message and conversation: 0.05309748649597168 seconds
+Getting AI message audio stream for message_id: 6830a488c3f901a810a34d54
+Time taken to fetch message and conversation: 0.07200741767883301 seconds
+Getting AI message audio stream for message_id: 6830a488c3f901a810a34d54
+Time taken to fetch message and conversation: 0.07164931297302246 seconds
+Getting AI message audio stream for message_id: 6830a488c3f901a810a34d54
+Time taken to fetch message and conversation: 0.07132554054260254 seconds
+Getting AI message audio stream for message_id: 6830a488c3f901a810a34d54
+Time taken to fetch message and conversation: 0.07588481903076172 seconds
+Getting AI message audio stream for message_id: 6830a488c3f901a810a34d54
+Time taken to fetch message and conversation: 0.07956814765930176 seconds
+Getting AI message audio stream for message_id: 6830a488c3f901a810a34d54
+Time taken to fetch message and conversation: 0.07541108131408691 seconds
+Getting AI message audio stream for message_id: 6830a488c3f901a810a34d54
+Time taken to fetch message and conversation: 0.09394693374633789 seconds
+Getting AI message audio stream for message_id: 6830a488c3f901a810a34d54
+Time taken to fetch message and conversation: 0.07407712936401367 seconds
+Getting AI message audio stream for message_id: 6830a488c3f901a810a34d54
+Time taken to fetch message and conversation: 0.0521697998046875 seconds
+Found feedback_id: 6830a49dc3f901a810a34d59, retrieving feedback document
+Feedback document structure: dict, keys: ['_id', 'target_id', 'target_type', 'user_feedback', 'user_id', 'transcription', 'timestamp']
+Feedback document: {'id': '6830a49dc3f901a810a34d59', 'user_feedback': '"Câu trả lời của bạn hơi ngắn gọn và lặp lại, nghe không tự nhiên lắm trong ngữ cảnh này. Khi ai đó nói "This bus is so slow today", bạn có thể đồng tình bằng nhiều cách khác nhau thay vì chỉ lặp lại "Yes, it is". Tương tự, thay vì chỉ nói "Yes, I am" khi được hỏi "Are you headed downtown too?", bạn có thể trả lời đầy đủ hơn.\n\nĐây là một vài gợi ý:\n\n1.  **"You\'re telling me! This bus is crawling. Yeah, I\'m headed downtown."** (Cậu nói đúng quá! Cái xe bus này bò chậm quá. Ừ, tôi cũng đi xuống phố.)\n\n    *   **Phân tích:**\n        *   `You\'re telling me!` (Thành ngữ, thể hiện sự đồng tình mạnh mẽ - tương đương "Cậu nói đúng quá!") - thay vì lặp lại "Yes, it is" một cách đơn điệu.\n        *   `This bus is crawling.` (Xe bus này bò chậm quá.) - Sử dụng động từ "crawl" (bò) để diễn tả sự chậm chạp.\n        *   `Yeah, I\'m headed downtown.` (Ừ, tôi đang đi xuống phố.) - Trả lời đầy đủ câu hỏi, tránh lặp lại cấu trúc "Yes, I am".\n        *   Cấu trúc câu đơn giản, dễ hiểu, phù hợp để diễn đạt ý đồng tình và xác nhận thông tin. So với câu gốc, câu này tự nhiên và đầy đủ thông tin hơn.\n\n2.  **"I know, right? Me too. Big meeting downtown."** (Tôi biết mà! Tôi cũng vậy. Có cuộc họp quan trọng ở trung tâm.)\n\n    *   **Phân tích:**\n        *   `I know, right?` (Tôi biết mà!) - Một cách khác để đồng tình.\n        *   `Me too.` (Tôi cũng vậy.) - Ngắn gọn nhưng vẫn đủ ý.\n        *   `Big meeting downtown.` (Có cuộc họp quan trọng ở trung tâm.) - Thêm thông tin chi tiết về lý do đi xuống phố.\n        *   Câu này kết hợp cả sự đồng tình và thông tin bổ sung, làm cho cuộc trò chuyện tự nhiên hơn. So với câu gốc, câu này cung cấp thêm thông tin và thể hiện sự quan tâm đến cuộc trò chuyện.\n\n3.  **"Seriously! I hope I won\'t be too late. And yes, downtown is the destination."** (Nghiêm túc đấy! Tôi hy vọng tôi sẽ không quá muộn. Và đúng vậy, trung tâm thành phố là điểm đến của tôi.)\n    *   **Phân tích:**\n        *   `Seriously!` (Nghiêm túc đấy!) - Nhấn mạnh sự đồng tình và lo lắng về việc trễ giờ.\n        *   `I hope I won\'t be too late.` (Tôi hy vọng tôi sẽ không quá muộn.) - Thể hiện cảm xúc cá nhân.\n        *   `And yes, downtown is the destination.` (Và đúng vậy, trung tâm thành phố là điểm đến.) - Trả lời rõ ràng câu hỏi trước đó.\n        *   Câu này kết hợp sự đồng tình, lo lắng và xác nhận thông tin, tạo ra một phản hồi đầy đủ và tự nhiên. So với câu gốc, câu này thể hiện sự lo lắng và cung cấp thông tin rõ ràng hơn về điểm đến."', 'created_at': '2025-05-23T16:38:53.675056'}
+Found feedback_id: 6830a49dc3f901a810a34d59, retrieving feedback document
+Feedback document structure: dict, keys: ['_id', 'target_id', 'target_type', 'user_feedback', 'user_id', 'transcription', 'timestamp']
+Feedback document: {'id': '6830a49dc3f901a810a34d59', 'user_feedback': '"Câu trả lời của bạn hơi ngắn gọn và lặp lại, nghe không tự nhiên lắm trong ngữ cảnh này. Khi ai đó nói "This bus is so slow today", bạn có thể đồng tình bằng nhiều cách khác nhau thay vì chỉ lặp lại "Yes, it is". Tương tự, thay vì chỉ nói "Yes, I am" khi được hỏi "Are you headed downtown too?", bạn có thể trả lời đầy đủ hơn.\n\nĐây là một vài gợi ý:\n\n1.  **"You\'re telling me! This bus is crawling. Yeah, I\'m headed downtown."** (Cậu nói đúng quá! Cái xe bus này bò chậm quá. Ừ, tôi cũng đi xuống phố.)\n\n    *   **Phân tích:**\n        *   `You\'re telling me!` (Thành ngữ, thể hiện sự đồng tình mạnh mẽ - tương đương "Cậu nói đúng quá!") - thay vì lặp lại "Yes, it is" một cách đơn điệu.\n        *   `This bus is crawling.` (Xe bus này bò chậm quá.) - Sử dụng động từ "crawl" (bò) để diễn tả sự chậm chạp.\n        *   `Yeah, I\'m headed downtown.` (Ừ, tôi đang đi xuống phố.) - Trả lời đầy đủ câu hỏi, tránh lặp lại cấu trúc "Yes, I am".\n        *   Cấu trúc câu đơn giản, dễ hiểu, phù hợp để diễn đạt ý đồng tình và xác nhận thông tin. So với câu gốc, câu này tự nhiên và đầy đủ thông tin hơn.\n\n2.  **"I know, right? Me too. Big meeting downtown."** (Tôi biết mà! Tôi cũng vậy. Có cuộc họp quan trọng ở trung tâm.)\n\n    *   **Phân tích:**\n        *   `I know, right?` (Tôi biết mà!) - Một cách khác để đồng tình.\n        *   `Me too.` (Tôi cũng vậy.) - Ngắn gọn nhưng vẫn đủ ý.\n        *   `Big meeting downtown.` (Có cuộc họp quan trọng ở trung tâm.) - Thêm thông tin chi tiết về lý do đi xuống phố.\n        *   Câu này kết hợp cả sự đồng tình và thông tin bổ sung, làm cho cuộc trò chuyện tự nhiên hơn. So với câu gốc, câu này cung cấp thêm thông tin và thể hiện sự quan tâm đến cuộc trò chuyện.\n\n3.  **"Seriously! I hope I won\'t be too late. And yes, downtown is the destination."** (Nghiêm túc đấy! Tôi hy vọng tôi sẽ không quá muộn. Và đúng vậy, trung tâm thành phố là điểm đến của tôi.)\n    *   **Phân tích:**\n        *   `Seriously!` (Nghiêm túc đấy!) - Nhấn mạnh sự đồng tình và lo lắng về việc trễ giờ.\n        *   `I hope I won\'t be too late.` (Tôi hy vọng tôi sẽ không quá muộn.) - Thể hiện cảm xúc cá nhân.\n        *   `And yes, downtown is the destination.` (Và đúng vậy, trung tâm thành phố là điểm đến.) - Trả lời rõ ràng câu hỏi trước đó.\n        *   Câu này kết hợp sự đồng tình, lo lắng và xác nhận thông tin, tạo ra một phản hồi đầy đủ và tự nhiên. So với câu gốc, câu này thể hiện sự lo lắng và cung cấp thông tin rõ ràng hơn về điểm đến."', 'created_at': '2025-05-23T16:38:53.761472'}
+Found feedback_id: 6830a49dc3f901a810a34d59, retrieving feedback document
+Feedback document structure: dict, keys: ['_id', 'target_id', 'target_type', 'user_feedback', 'user_id', 'transcription', 'timestamp']
+Feedback document: {'id': '6830a49dc3f901a810a34d59', 'user_feedback': '"Câu trả lời của bạn hơi ngắn gọn và lặp lại, nghe không tự nhiên lắm trong ngữ cảnh này. Khi ai đó nói "This bus is so slow today", bạn có thể đồng tình bằng nhiều cách khác nhau thay vì chỉ lặp lại "Yes, it is". Tương tự, thay vì chỉ nói "Yes, I am" khi được hỏi "Are you headed downtown too?", bạn có thể trả lời đầy đủ hơn.\n\nĐây là một vài gợi ý:\n\n1.  **"You\'re telling me! This bus is crawling. Yeah, I\'m headed downtown."** (Cậu nói đúng quá! Cái xe bus này bò chậm quá. Ừ, tôi cũng đi xuống phố.)\n\n    *   **Phân tích:**\n        *   `You\'re telling me!` (Thành ngữ, thể hiện sự đồng tình mạnh mẽ - tương đương "Cậu nói đúng quá!") - thay vì lặp lại "Yes, it is" một cách đơn điệu.\n        *   `This bus is crawling.` (Xe bus này bò chậm quá.) - Sử dụng động từ "crawl" (bò) để diễn tả sự chậm chạp.\n        *   `Yeah, I\'m headed downtown.` (Ừ, tôi đang đi xuống phố.) - Trả lời đầy đủ câu hỏi, tránh lặp lại cấu trúc "Yes, I am".\n        *   Cấu trúc câu đơn giản, dễ hiểu, phù hợp để diễn đạt ý đồng tình và xác nhận thông tin. So với câu gốc, câu này tự nhiên và đầy đủ thông tin hơn.\n\n2.  **"I know, right? Me too. Big meeting downtown."** (Tôi biết mà! Tôi cũng vậy. Có cuộc họp quan trọng ở trung tâm.)\n\n    *   **Phân tích:**\n        *   `I know, right?` (Tôi biết mà!) - Một cách khác để đồng tình.\n        *   `Me too.` (Tôi cũng vậy.) - Ngắn gọn nhưng vẫn đủ ý.\n        *   `Big meeting downtown.` (Có cuộc họp quan trọng ở trung tâm.) - Thêm thông tin chi tiết về lý do đi xuống phố.\n        *   Câu này kết hợp cả sự đồng tình và thông tin bổ sung, làm cho cuộc trò chuyện tự nhiên hơn. So với câu gốc, câu này cung cấp thêm thông tin và thể hiện sự quan tâm đến cuộc trò chuyện.\n\n3.  **"Seriously! I hope I won\'t be too late. And yes, downtown is the destination."** (Nghiêm túc đấy! Tôi hy vọng tôi sẽ không quá muộn. Và đúng vậy, trung tâm thành phố là điểm đến của tôi.)\n    *   **Phân tích:**\n        *   `Seriously!` (Nghiêm túc đấy!) - Nhấn mạnh sự đồng tình và lo lắng về việc trễ giờ.\n        *   `I hope I won\'t be too late.` (Tôi hy vọng tôi sẽ không quá muộn.) - Thể hiện cảm xúc cá nhân.\n        *   `And yes, downtown is the destination.` (Và đúng vậy, trung tâm thành phố là điểm đến.) - Trả lời rõ ràng câu hỏi trước đó.\n        *   Câu này kết hợp sự đồng tình, lo lắng và xác nhận thông tin, tạo ra một phản hồi đầy đủ và tự nhiên. So với câu gốc, câu này thể hiện sự lo lắng và cung cấp thông tin rõ ràng hơn về điểm đến."', 'created_at': '2025-05-23T16:38:53.842200'}
+Getting AI message audio stream for message_id: 6830a497c3f901a810a34d58
+Time taken to fetch message and conversation: 0.05479121208190918 seconds
+Getting AI message audio stream for message_id: 6830a497c3f901a810a34d58
+Time taken to fetch message and conversation: 0.05465888977050781 seconds
+Getting AI message audio stream for message_id: 6830a497c3f901a810a34d58
+Time taken to fetch message and conversation: 0.06815409660339355 seconds
+Getting AI message audio stream for message_id: 6830a497c3f901a810a34d58
+Time taken to fetch message and conversation: 0.06664657592773438 seconds
+Getting AI message audio stream for message_id: 6830a497c3f901a810a34d58
+Time taken to fetch message and conversation: 0.05767369270324707 seconds
+Getting AI message audio stream for message_id: 6830a497c3f901a810a34d58
+Time taken to fetch message and conversation: 0.05792093276977539 seconds
+Getting AI message audio stream for message_id: 6830a497c3f901a810a34d58
+Time taken to fetch message and conversation: 0.05170083045959473 seconds
+Getting AI message audio stream for message_id: 6830a497c3f901a810a34d58
+Time taken to fetch message and conversation: 0.052397966384887695 seconds
+Getting AI message audio stream for message_id: 6830a497c3f901a810a34d58
+Time taken to fetch message and conversation: 0.056092023849487305 seconds
+Getting AI message audio stream for message_id: 6830a497c3f901a810a34d58
+Time taken to fetch message and conversation: 0.056522369384765625 seconds
+Getting AI message audio stream for message_id: 6830a497c3f901a810a34d58
+Time taken to fetch message and conversation: 0.05636763572692871 seconds
+Getting AI message audio stream for message_id: 6830a497c3f901a810a34d58
+Time taken to fetch message and conversation: 0.05382680892944336 seconds
+Getting AI message audio stream for message_id: 6830a497c3f901a810a34d58
+Time taken to fetch message and conversation: 0.053292274475097656 seconds
+Getting AI message audio stream for message_id: 6830a497c3f901a810a34d58
+Time taken to fetch message and conversation: 0.053804636001586914 seconds
+Getting AI message audio stream for message_id: 6830a497c3f901a810a34d58
+Time taken to fetch message and conversation: 0.053497314453125 seconds
+Getting AI message audio stream for message_id: 6830a497c3f901a810a34d58
+Time taken to fetch message and conversation: 0.05284881591796875 seconds
+Getting AI message audio stream for message_id: 6830a497c3f901a810a34d58
+Time taken to fetch message and conversation: 0.057546377182006836 seconds
+Getting AI message audio stream for message_id: 6830a497c3f901a810a34d58
+Time taken to fetch message and conversation: 0.05230903625488281 seconds
+Getting AI message audio stream for message_id: 6830a497c3f901a810a34d58
+Time taken to fetch message and conversation: 0.05085897445678711 seconds
+Getting AI message audio stream for message_id: 6830a497c3f901a810a34d58
+Time taken to fetch message and conversation: 0.05843639373779297 seconds
+Getting AI message audio stream for message_id: 6830a497c3f901a810a34d58
+Time taken to fetch message and conversation: 0.06460046768188477 seconds
+Getting AI message audio stream for message_id: 6830a5fbc3f901a810a34d5d
+Time taken to fetch message and conversation: 0.05222630500793457 seconds
+Failed to parse JSON response: Expecting value: line 1 column 1 (char 0)
+Response text: Based on the extremely limited and vague input, I'll create a simple scenario focusing on basic communication. I will assume "c" means customer and "v" means vendor, and that they are interacting at a market.
+
+```json
+{
+  "refined_user_role": "Customer",
+  "refined_ai_role": "Vendor",
+  "refined_situation": "You are at a local farmer's market. The customer is looking at your apples.",
+  "response": "Hi there! Welcome to my stand. Are you interested in the apples today, David?",
+  "ai_gender": "female"
+}
+Found feedback_id: 6830a73cc3f901a810a34d65, retrieving feedback document
+Feedback document structure: dict, keys: ['_id', 'target_id', 'target_type', 'user_feedback', 'user_id', 'transcription', 'timestamp']
+Feedback document: {'id': '6830a73cc3f901a810a34d65', 'user_feedback': '"Câu trả lời của bạn hơi cụt lủn trong ngữ cảnh này. Mình hiểu là bạn đồng ý trả tiền, nhưng để lịch sự và tự nhiên hơn, bạn có thể nói rõ hơn một chút.\n\nVí dụ:\n\n*   "Yes, I\'ll pay now." (Vâng, tôi sẽ trả bây giờ.)\n*   "Yes, I\'m ready to pay." (Vâng, tôi sẵn sàng trả.)\n*   "Yes, please." (Vâng, làm ơn.)\n\nPhân tích câu "Yes, I\'ll pay now.":\n\n*   "Yes": Đồng ý với đề nghị của người bán hàng.\n*   "I": Chủ ngữ, người nói (khách hàng).\n*   "\'ll pay": Động từ ở thì tương lai đơn (will pay), diễn tả ý định trả tiền ngay lúc đó.\n*   "now": Trạng từ chỉ thời gian, nhấn mạnh việc trả tiền sẽ diễn ra ngay lập tức.\n\nCâu gốc của bạn ("Yes.") thiếu chủ ngữ và động từ, nên nghe không tự nhiên bằng. Việc thêm "I\'ll pay now" giúp câu rõ ràng và lịch sự hơn."', 'created_at': '2025-05-23T16:50:17.529210'}
+Failed to parse JSON response: Expecting value: line 1 column 1 (char 0)
+Response text: It seems like the provided inputs are too vague to create a meaningful role-playing scenario. I will make assumptions and create a scenario about ordering food at a restaurant.
+
+```json
+{
+  "refined_user_role": "Customer",
+  "refined_ai_role": "Server",
+  "refined_situation": "A customer is ready to order food at a restaurant. The server approaches the table.",
+  "response": "Hi there! Welcome! My name is David, and I'll be your server today. Are you ready to order, or would you like a few more minutes?",
+  "ai_gender": "male"
+}
+Generated response: ```json
+{
+  "refined_user_role": "Customer",
+  "refined_ai_role": "Cashier",
+  "refined_situation": "You are at a supermarket checkout. The customer is ready to pay for their groceries. It's a busy afternoon.",
+  "response": "Hi there! Did you find everything okay today, David? I'm Emily, and I'll be helping you with your checkout today.",
+  "ai_gender": "female"
+}
+```
+
+Generated response: ```json
+{
+  "refined_user_role": "Job Applicant",
+  "refined_ai_role": "Interviewer",
+  "refined_situation": "You are interviewing for an internship at a tech company. The interviewer, Sarah, is a senior engineer.",
+  "response": "Hi, David. Thanks for coming in today. I'm Sarah. Please, have a seat. So, tell me a little bit about yourself and why you're interested in this internship.",
+  "ai_gender": "female"
+}
+```
+Generated response: ```json
+{
+  "refined_user_role": "Customer",
+  "refined_ai_role": "Cashier",
+  "refined_situation": "You are at a grocery store. You are buying some food. The cashier is ready to help you.",
+  "response": "Hi, welcome! I'm Emily. Are you ready to check out today?",
+  "ai_gender": "female"
+}
+```
+
+Getting AI message audio stream for message_id: 6830ac505a8c9ad86c40da6d
+Time taken to fetch message and conversation: 0.07343482971191406 seconds
+Getting AI message audio stream for message_id: 6830b768b0ca2af642db72e2
+Time taken to fetch message and conversation: 0.07469439506530762 seconds
+Getting AI message audio stream for message_id: 6830b768b0ca2af642db72e2
+Time taken to fetch message and conversation: 0.07442474365234375 seconds
+Getting AI message audio stream for message_id: 6830b768b0ca2af642db72e2
+Time taken to fetch message and conversation: 0.07080531120300293 seconds
+Getting AI message audio stream for message_id: 6830b768b0ca2af642db72e2
+Time taken to fetch message and conversation: 0.07232069969177246 seconds
+Getting AI message audio stream for message_id: 6830b768b0ca2af642db72e2
+Time taken to fetch message and conversation: 0.07205700874328613 seconds
+Getting AI message audio stream for message_id: 6830b768b0ca2af642db72e2
+Time taken to fetch message and conversation: 0.0740058422088623 seconds
+Found feedback_id: 6830bc38b0ca2af642db72f7, retrieving feedback document
+Feedback document structure: dict, keys: ['_id', 'target_id', 'target_type', 'user_feedback', 'user_id', 'transcription', 'timestamp']
+Feedback document: {'id': '6830bc38b0ca2af642db72f7', 'user_feedback': '"Câu trả lời "uh hmm" khá là mơ hồ và không giúp người đối diện hiểu ý bạn. Trong tình huống này, bạn có thể thử một trong những cách sau để diễn đạt rõ hơn:\n\n1.  **Nếu bạn cần thêm thời gian:** Bạn có thể nói "Just a moment, please." (Cho tôi xin một chút thời gian ạ.) để cho David biết bạn vẫn đang suy nghĩ.\n\n2.  **Nếu bạn không chắc chắn về menu:** Bạn có thể nói "Could you please show me the menu again?" (Bạn có thể cho tôi xem lại menu được không ạ?) Câu này lịch sự yêu cầu David đưa menu cho bạn xem lại.\n\n3.  **Nếu bạn muốn hỏi về một món đồ cụ thể:** Bạn có thể nói "What kind of noodles do you have?" (Bạn có những loại mì nào ạ?) nếu bạn thực sự muốn hỏi về mì.\n\n**Phân tích ví dụ:** "Could you please show me the menu again?"\n\n*   **Could you:** Đây là cấu trúc câu hỏi lịch sự, thường được dùng khi nhờ ai đó làm gì.\n*   **please:** Từ này làm cho yêu cầu của bạn lịch sự hơn.\n*   **show me:** "Show" là động từ (cho xem), "me" là tân ngữ (cho tôi).\n*   **the menu:** "Menu" là danh từ (thực đơn), "the" là mạo từ xác định (cái thực đơn cụ thể).\n*   **again:** Trạng từ chỉ tần suất (lại, một lần nữa).\n\nCâu này có cấu trúc đơn giản: *Yêu cầu + hành động + đối tượng + bổ sung*, giúp người nghe dễ dàng hiểu được ý bạn muốn gì."', 'created_at': '2025-05-23T18:19:54.590377'}
+Found feedback_id: 6830bcb8b0ca2af642db730b, retrieving feedback document
+Feedback document structure: dict, keys: ['_id', 'target_id', 'target_type', 'user_feedback', 'user_id', 'transcription', 'timestamp']
+Feedback document: {'id': '6830bcb8b0ca2af642db730b', 'user_feedback': '"Câu trả lời "Anything else?" không sai về ngữ pháp, nhưng trong ngữ cảnh này, nó có thể gây hiểu nhầm. Bạn đang hỏi barista (AI) muốn gì, nhưng câu hỏi này thường được dùng để hỏi khách hàng xem họ có muốn thêm gì vào đơn hàng không.\n\nĐể diễn đạt ý của bạn một cách rõ ràng hơn, bạn có thể thử những cách sau:\n\n1.  **"What do you recommend?"** (Bạn gợi ý món gì?) - Câu này hỏi barista về gợi ý của họ.\n2.  **"What would you suggest?"** (Bạn đề xuất món gì?) - Tương tự như trên, nhưng trang trọng hơn một chút.\n3.  **"Surprise me!"** (Hãy làm tôi bất ngờ đi!) - Câu này thể hiện sự tin tưởng vào barista và để họ tự chọn món cho bạn.\n\nVí dụ, nếu bạn chọn câu "What do you recommend?":\n\n*   **What** (cái gì) - đại từ để hỏi về gợi ý.\n*   **do** (trợ động từ) - dùng trong câu hỏi thì hiện tại đơn.\n*   **you** (bạn) - chủ ngữ, người được hỏi.\n*   **recommend** (gợi ý) - động từ chính, hành động được hỏi.\n\nTrong câu gốc "Anything you want?", bạn đang hỏi barista *muốn* gì, thay vì hỏi họ *gợi ý* gì. "Anything else?" lại mang nghĩa là "Còn gì nữa không?" khi bạn là người phục vụ. Vì vậy, việc thay đổi động từ chính là rất quan trọng để truyền đạt đúng ý bạn muốn."', 'created_at': '2025-05-23T18:21:44.612376'}
+Found feedback_id: 6830bd34b0ca2af642db7329, retrieving feedback document
+Feedback document structure: dict, keys: ['_id', 'target_id', 'target_type', 'user_feedback', 'user_id', 'transcription', 'timestamp']
+Feedback document: {'id': '6830bd34b0ca2af642db7329', 'user_feedback': '"Câu bạn nói hơi khó hiểu một chút. Có vẻ như bạn đang hỏi về việc thêm một shot espresso vào một loại đồ uống nào đó, và tên của loại đồ uống đó là "Camera G-Source"? Mình đoán vậy nhé.\n\n**Lỗi và gợi ý:**\n\n*   **"What is the extra shot in camera G-Source?"**: Cách bạn dùng giới từ "in" ở đây không tự nhiên. Thường thì, khi muốn hỏi về việc thêm một thành phần nào đó vào đồ uống, bạn có thể dùng "with" hoặc "of".\n\n**Một vài cách diễn đạt khác bạn có thể tham khảo:**\n\n1.  "What\'s in a Camera G-Source with an extra shot?" (Cái Camera G-Source có gì với một shot espresso?) - Câu này nếu "Camera G-Source" là tên một loại đồ uống có sẵn.\n2.  "Can I have an extra shot of espresso in the Camera G-Source?" (Tôi có thể thêm một shot espresso vào Camera G-Source được không?) - Câu này dùng để yêu cầu thêm espresso vào một loại đồ uống cụ thể.\n3.  "Does the Camera G-Source come with an extra shot?" (Camera G-Source có sẵn extra shot không?) - Câu này dùng để hỏi xem liệu loại đồ uống đó có sẵn phiên bản có thêm espresso hay không.\n\n**Phân tích cấu trúc câu ví dụ (câu 2):**\n\n*   **"Can I have..."**: Cấu trúc lịch sự để yêu cầu một thứ gì đó. ("I" là chủ ngữ ẩn, "have" là động từ)\n*   **"an extra shot of espresso"**: Cụm danh từ chỉ thành phần bạn muốn thêm vào. ("shot" là danh từ chính, "extra" và "espresso" là các tính từ bổ nghĩa)\n*   **"in the Camera G-Source"**: Giới từ "in" chỉ vị trí, trong trường hợp này là "trong" loại đồ uống Camera G-Source. ("Camera G-Source" là tân ngữ của giới từ "in")\n\nSo với câu gốc của bạn, câu này rõ ràng và dễ hiểu hơn vì nó sử dụng cấu trúc ngữ pháp quen thuộc khi order đồ uống và giới từ chính xác để chỉ vị trí của thành phần được thêm vào."', 'created_at': '2025-05-23T18:23:48.771525'}

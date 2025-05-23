@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../core/di/injection_container.dart';
+import 'package:get_it/get_it.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/text_styles.dart';
 import '../../../../core/utils/responsive_layout.dart';
@@ -30,7 +30,7 @@ class _ImageDescriptionScreenState extends State<ImageDescriptionScreen> {
   @override
   void initState() {
     super.initState();
-    _cubit = sl<ImageDescriptionCubit>();
+    _cubit = GetIt.instance<ImageDescriptionCubit>();
     _cubit.loadPracticeImages();
   }
 
@@ -205,18 +205,35 @@ class _ImageDescriptionScreenState extends State<ImageDescriptionScreen> {
 
   Widget _buildImageSection(BuildContext context, ImageDescriptionState state,
       List<ImageEntity> images, bool isDarkMode) {
-    if (_currentImageIndex >= images.length) return const SizedBox.shrink();
+    if (_currentImageIndex >= images.length) {
+      print('DEBUG: Current index $_currentImageIndex >= images length ${images.length}');
+      return const SizedBox.shrink();
+    }
 
     final currentImage = images[_currentImageIndex];
+    print('DEBUG: Building image section for image ID: ${currentImage.id}');
+    print('DEBUG: Current image index: $_currentImageIndex');
+    print('DEBUG: Total images: ${images.length}');
 
     return FutureBuilder<String?>(
       future: _cubit.getImageUrlById(currentImage.id),
       builder: (context, snapshot) {
+        print('DEBUG: FutureBuilder state: ${snapshot.connectionState}');
+        if (snapshot.hasData) {
+          print('DEBUG: FutureBuilder has URL data: ${snapshot.data}');
+        }
+        if (snapshot.hasError) {
+          print('DEBUG: FutureBuilder error: ${snapshot.error}');
+        }
+        
         return ImageDisplayWidget(
           imageUrl: snapshot.data,
           isLoading: snapshot.connectionState == ConnectionState.waiting,
-          errorMessage: snapshot.hasError ? 'Failed to load image' : null,
-          onRetry: () => setState(() {}), // Trigger rebuild to retry
+          errorMessage: snapshot.hasError ? 'Failed to load image URL: ${snapshot.error}' : null,
+          onRetry: () {
+            print('DEBUG: Retry button pressed, rebuilding image section');
+            setState(() {});
+          },
         );
       },
     );
