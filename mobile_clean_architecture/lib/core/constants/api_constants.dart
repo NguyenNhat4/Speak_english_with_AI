@@ -2,7 +2,7 @@
 class ApiConstants {
   // chạy 2 lệnh trên cmd này kết nối với đt qua usb
 // adb reverse tcp:9000 tcp:9000
-// adb reverse tcp:8880 tcp:8880
+// adb reverse tcp:8880 tcp:8880r
 
   static const String ip = 'localhost';
   static const String baseUrl = 'http://$ip:9000';
