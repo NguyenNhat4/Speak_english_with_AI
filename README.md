@@ -11,14 +11,11 @@ This full-stack application provides an advanced platform for English language l
 - **AI Response with Realistic Voice**: Convert AI text responses to natural, realistic voice using text-to-speech technology
 - **Image Description Practice**: Users speak descriptions of shown images to practice vocabulary and expression
 - **Speech Correction & Analysis**: Get corrected versions of spoken text with detailed explanations
-- **Smart Suggestions**: Receive personalized suggestions for improvement based on speech patterns
 - **Grammar & Vocabulary Feedback**: Real-time analysis and feedback on grammar usage and vocabulary choices
-- **Pronunciation Assessment**: Detailed pronunciation analysis with improvement recommendations
 - **Conversation Context**: AI maintains conversation context for more natural interactions
 
 ### 📚 Learning Features
 - User authentication and profile management
-- Progress tracking and personalized learning paths
 - Interactive conversation practice with AI tutoring
 - Multi-platform support (Android, iOS, Web, Desktop)
 
@@ -54,11 +51,7 @@ User Flow:
 - **Sentence structure** improvements
 - **Cultural context** explanations for idiomatic expressions
 
-### 5. Smart Learning Suggestions
-- **Personalized recommendations** based on learning patterns
-- **Difficulty progression** adapted to user skill level
-- **Practice scheduling** using spaced repetition algorithms
-- **Topic recommendations** based on interests and weaknesses
+
 
 ## 🚀 Getting Started
 
