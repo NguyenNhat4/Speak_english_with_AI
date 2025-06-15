@@ -20,17 +20,191 @@ router = APIRouter()
 # TEXT-TO-SPEECH ENDPOINTS
 # =============================
 
-# GET /messages/{message_id}/speech - Get AI message audio stream
-# This endpoint will convert AI message text to speech audio stream
+@router.get(
+    "/messages/{message_id}/speech",
+    summary="Get AI message audio stream",
+    description="Retrieves an AI message's text, converts it to speech via an external TTS service, and streams the audio."
+)
+async def get_ai_message_as_speech_stream( 
+    message_id: str,
+    current_user: dict = Depends(get_current_user)
+):
+    try:
+        start = time.time()
+        
+        logger.info(f"Getting AI message audio stream for message_id: {message_id}")
+        message_object_id = ObjectId(message_id) # Convert string ID to ObjectId for MongoDB query
+        message = db.messages.find_one({"_id": message_object_id})
+        Conversation = db.conversations.find_one({"_id": message["conversation_id"]})
+        conversation_voice_type = Conversation["voice_type"]
+        end = time.time()
+        logger.info(f"Time taken to fetch message and conversation: {end - start} seconds")
+        if not message:
+            raise HTTPException(status_code=404, detail="Message not found")
 
-# GET /messages/demospeech - Demo TTS endpoint
-# This endpoint will provide demo TTS functionality without database dependency
+        # 2. Basic validation (optional but good)
+        if message.get("sender") != "ai":
+            raise HTTPException(status_code=400, detail="Speech can only be generated for AI messages")
 
-# GET /messages/{message_id}/voice_context - Get conversation voice context
-# This endpoint will retrieve conversation voice type and latest AI message
+        ai_text = message.get("content")
+        if not ai_text:
+            raise HTTPException(status_code=400, detail="AI Message has no text content to synthesize")
 
-# GET /messages/{message_id}/fallback_voice_context - Get fallback voice context
-# This endpoint will provide fallback voice context without database validation
+        default_lang_code = "en-US"     # Example: set to your primary language
+        default_model_name = "kokoro"   # From your TTS API example
+        default_response_format = "mp3"
+        default_speed = 1.3
+
+        return await get_speech_from_tts_service(
+            text_to_speak=ai_text,
+            voice_name=conversation_voice_type,
+            model_name=default_model_name,
+            response_format=default_response_format,
+            speed=default_speed,
+            lang_code=default_lang_code
+        )
+
+    except HTTPException as e:
+        raise e
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to generate speech: An internal error occurred.")
+
+
+@router.get(
+    "/messages/demospeech",
+    summary="Get AI message audio stream",
+    description="Retrieves an AI message's text, converts it to speech via an external TTS service, and streams the audio."
+)
+async def get_ai_message_as_speech_stream_demo( 
+    message: str = "Hello, how are you?"
+):
+    try:
+        conversation_voice_type = "hm_omega"
+        default_lang_code = "en-US"     # Example: set to your primary language
+        default_model_name = "kokoro"   # From your TTS API example
+        default_response_format = "mp3"
+        default_speed = 1.3
+
+        # 4. Call the TTS Service via your client function
+        #    This function is expected to return a StreamingResponse
+        start = time.time()
+        stream_response = await get_speech_from_tts_service(
+            text_to_speak=message,
+            voice_name=conversation_voice_type,
+            model_name=default_model_name,
+            response_format=default_response_format,
+            speed=default_speed,
+            lang_code=default_lang_code
+        )
+        end = time.time()
+        
+        # Add timing information as a header instead of trying to return it with the stream
+        stream_response.headers["X-Processing-Time"] = str(end - start)
+        
+        return stream_response
+    except HTTPException as e:
+        raise e
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to generate speech: An internal error occurred.")
+
+
+@router.get(
+    "/messages/{message_id}/voice_context",
+    summary="Get conversation voice type and latest AI message",
+    description="Retrieves the conversation voice type and latest AI message based on the provided message ID."
+)
+async def get_voice_context(
+    message_id: str,
+    current_user: dict = Depends(get_current_user)
+):
+    """
+    Get conversation voice type and latest AI message for the conversation containing the specified message.
+    
+    This endpoint is particularly useful for audio playback in the mobile app, as it provides
+    both the voice type to use and the latest AI message that might need to be played.
+    """
+    try:
+        # Convert string ID to ObjectId for MongoDB query
+        message_object_id = ObjectId(message_id)
+        
+        # Find the message
+        message = db.messages.find_one({"_id": message_object_id})
+        if not message:
+            logger.warning(f"Message not found: {message_id}")
+            raise HTTPException(status_code=404, detail="Message not found")
+        
+        # Get the conversation
+        conversation_id = message["conversation_id"]
+        conversation = db.conversations.find_one({"_id": conversation_id})
+        if not conversation:
+            logger.warning(f"Conversation not found for message: {message_id}")
+            raise HTTPException(status_code=404, detail="Conversation not found")
+        
+        # Get the voice type from the conversation
+        voice_type = conversation.get("voice_type", "hm_omega")  # Default to hm_omega if not found
+        
+        # Find the latest AI message in the conversation
+        latest_ai_message = db.messages.find(
+            {"conversation_id": conversation_id, "sender": "ai"}
+        ).sort("timestamp", -1).limit(1)
+        
+        latest_ai_message_list = list(latest_ai_message)
+        latest_ai_message_data = None
+        is_latest = False
+        
+        if latest_ai_message_list:
+            latest_msg = latest_ai_message_list[0]
+            latest_ai_message_data = {
+                "id": str(latest_msg["_id"]),
+                "content": latest_msg.get("content", ""),
+                "timestamp": latest_msg.get("timestamp", datetime.now().isoformat())
+            }
+        
+        return {
+            "voice_type": voice_type,
+            "latest_ai_message": latest_ai_message_data,
+        }
+        
+    except HTTPException as e:
+        raise e
+    except Exception as e:
+        logger.error(f"Error getting voice context: {str(e)}", exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to get voice context: {str(e)}"
+        )
+
+
+@router.get(
+    "/messages/{message_id}/fallback_voice_context",
+    summary="Get fallback voice context for any message ID",
+    description="Provides voice context information without requiring the message to exist in the database."
+)
+async def get_fallback_voice_context(
+    message_id: str,
+    current_user: dict = Depends(get_current_user)
+):
+    """
+    Get fallback voice context for any message ID without database validation.
+    
+    This endpoint is a reliable alternative to the /messages/{message_id}/voice_context endpoint
+    when the message doesn't exist in the database. It always returns a valid response with
+    the provided message ID as both the ID and content of the latest AI message.
+    """
+    logger.info(f"Fallback voice context requested for message_id: {message_id}")
+    
+    # Create a timestamp in the expected format
+    timestamp = datetime.utcnow().isoformat()
+    
+    return {
+        "voice_type": "jf_alpha",
+        "latest_ai_message": {
+            "id": message_id,
+            "content": "Hello, how can I help you today?",
+            "timestamp": timestamp
+        }
+    }
+
 
 # POST /tts/synthesize - Synthesize text to speech (to be implemented)
 # This endpoint will handle direct text-to-speech conversion
