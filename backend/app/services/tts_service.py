@@ -6,13 +6,12 @@ and speech generation for the SpeakAI application.
 """
 
 import logging
-from typing import Dict, Any, Optional, Generator
+from typing import Dict, Any, Optional
 from fastapi import HTTPException
 from fastapi.responses import StreamingResponse
 
 from app.utils.tts_client_service import (
-    text_to_speech_streaming,
-    text_to_speech_with_context,
+    get_speech_from_tts_service,
     pick_suitable_voice_name
 )
 
@@ -31,12 +30,12 @@ class TTSService:
         """Initialize the TTS service."""
         self.logger = logging.getLogger(self.__class__.__name__)
     
-    def generate_speech_streaming(
+    async def generate_speech_streaming(
         self,
         text: str,
         voice_name: Optional[str] = None,
         language_code: str = "en-US"
-    ) -> Generator[bytes, None, None]:
+    ) -> StreamingResponse:
         """
         Generate streaming speech from text.
         
@@ -46,7 +45,7 @@ class TTSService:
             language_code (str): The language code for speech generation
             
         Returns:
-            Generator[bytes, None, None]: Streaming audio data
+            StreamingResponse: Streaming audio response
             
         Raises:
             HTTPException: If speech generation fails
@@ -58,15 +57,19 @@ class TTSService:
                     detail="Text is required for speech generation"
                 )
             
+            # Use default voice if none provided
+            if not voice_name:
+                voice_name = "af_heart"  # Default voice
+            
             # Generate streaming speech
-            audio_stream = text_to_speech_streaming(
-                text=text,
+            streaming_response = await get_speech_from_tts_service(
+                text_to_speak=text,
                 voice_name=voice_name,
-                language_code=language_code
+                lang_code=language_code
             )
             
             self.logger.debug(f"Generated streaming speech for text length: {len(text)}")
-            return audio_stream
+            return streaming_response
             
         except Exception as e:
             self.logger.error(f"Failed to generate streaming speech: {str(e)}")
@@ -75,12 +78,12 @@ class TTSService:
                 detail=f"Speech generation failed: {str(e)}"
             )
     
-    def generate_speech_with_context(
+    async def generate_speech_with_context(
         self,
         text: str,
         conversation_context: Dict[str, Any],
         voice_name: Optional[str] = None
-    ) -> Generator[bytes, None, None]:
+    ) -> StreamingResponse:
         """
         Generate speech with conversation context.
         
@@ -90,7 +93,7 @@ class TTSService:
             voice_name (Optional[str]): The voice name to use
             
         Returns:
-            Generator[bytes, None, None]: Streaming audio data
+            StreamingResponse: Streaming audio response
             
         Raises:
             HTTPException: If speech generation fails
@@ -102,15 +105,19 @@ class TTSService:
                     detail="Text is required for speech generation"
                 )
             
-            # Generate speech with context
-            audio_stream = text_to_speech_with_context(
-                text=text,
-                conversation_context=conversation_context,
-                voice_name=voice_name
+            # Use default voice if none provided
+            if not voice_name:
+                voice_name = "af_heart"  # Default voice
+            
+            # Generate speech (the actual TTS service doesn't use context directly)
+            streaming_response = await get_speech_from_tts_service(
+                text_to_speak=text,
+                voice_name=voice_name,
+                lang_code="en-US"
             )
             
             self.logger.debug(f"Generated contextual speech for text length: {len(text)}")
-            return audio_stream
+            return streaming_response
             
         except Exception as e:
             self.logger.error(f"Failed to generate contextual speech: {str(e)}")
@@ -158,7 +165,7 @@ class TTSService:
     
     def create_streaming_response(
         self,
-        audio_stream: Generator[bytes, None, None],
+        audio_stream: Any,
         filename: str = "speech.mp3"
     ) -> StreamingResponse:
         """
