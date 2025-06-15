@@ -10,14 +10,17 @@ from app.config.database import db
 from app.schemas.message import MessageCreate, MessageResponse
 from app.models.message import Message
 from app.utils.auth import get_current_user
-from app.utils.gemini import generate_response
-from app.utils.feedback_service import FeedbackService
+from app.services.conversation_service import ConversationService
+from app.services.feedback_service import FeedbackService
+from app.services.ai_service import AIService
 
 # Set up logger
 logger = logging.getLogger(__name__)
 
-# Initialize feedback service
+# Initialize services
+conversation_service = ConversationService()
 feedback_service = FeedbackService()
+ai_service = AIService()
 
 # Create router instance
 router = APIRouter()
@@ -45,26 +48,22 @@ async def add_message_and_get_response (
     try:
                 user_id = str(current_user["_id"])
                 
-                # MongoDB find_one is not a coroutine, we need to wrap these in async functions
+                # Step 1: Fetch the audio and conversation data using services
                 async def get_audio():
                     return db.audio.find_one({"_id": ObjectId(audio_id)})
                     
-                async def get_conversation():
-                    return db.conversations.find_one({
-                        "_id": ObjectId(conversation_id),
-                        "user_id": ObjectId(user_id)
-                    })
-         
-                # Step 1: Fetch the audio and conversation data    
-                # Now create tasks from the async functions
-                audio_task = asyncio.create_task(get_audio())
-                conversation_task = asyncio.create_task(get_conversation())
+                # Get conversation context using conversation service
+                conversation_context = conversation_service.get_conversation_context(conversation_id)
+                conversation = conversation_context["conversation"]
                 
-                # Gather the results
-                audio_data, conversation = await asyncio.gather(audio_task, conversation_task)
-
-                if not conversation:
-                    raise HTTPException(status_code=404, detail="Conversation not found")
+                # Verify user owns the conversation
+                if str(conversation["user_id"]) != user_id:
+                    raise HTTPException(status_code=403, detail="Access denied to this conversation")
+                
+                # Get audio data
+                audio_data = await get_audio()
+                if not audio_data:
+                    raise HTTPException(status_code=404, detail="Audio data not found")
                 
             
             
@@ -77,36 +76,39 @@ async def add_message_and_get_response (
                 )
                 
                 db.messages.insert_one(user_message.to_dict())
+                # Schedule feedback processing in background using service
                 background_tasks.add_task(
-                    feedback_service.process_speech_feedback,
+                    feedback_service.generate_speech_feedback,
                     transcription=audio_data["transcription"],
                     user_id=user_id,
                     conversation_id=conversation_id,
-                    audio_id=audio_data["_id"],
+                    audio_id=str(audio_data["_id"]),
                     file_path=audio_data["file_path"],
                     user_message_id=str(user_message._id)
                 )
-                # Fetch conversation history
-                messages = list(db.messages.find({"conversation_id": ObjectId(conversation_id)}).sort("timestamp", 1))
                 
-                # Include context in the prompt 
+                # Get conversation history from the context
+                messages = conversation_context["messages"]
+                
+                # Build conversation prompt using conversation context
+                conversation_history_text = "\n".join([f"{msg['sender']}: {msg['content']}" for msg in messages])
+                
+                # Create prompt for AI response
                 prompt = (
                 f"You are playing the role of {conversation['ai_role']} and the user is {conversation['user_role']}. "
                 f"The situation is: {conversation['situation']}. "
                 f"Stay fully in character as {conversation['ai_role']}. "
                 f"Use natural, simple English that new and intermediate learners can easily understand. "
-                f"Keep your response short and litterly alike the role you are in (1 to 4 sentences). "
+                f"Keep your response short and literally alike the role you are in (1 to 4 sentences). "
                 f"Avoid special characters like brackets or symbols. "
-                f"Do not refer to the user with any placeholder like a name in brackets. Dont include asterisk in your response. "
+                f"Do not refer to the user with any placeholder like a name in brackets. Don't include asterisk in your response. "
                 f"Ask an open-ended question that fits the situation and encourages the user to speak more."
-                f"\nHere is the conversation so far:\n" +
-                "\n".join([f"{msg['sender']}: {msg['content']}" for msg in messages]) +
+                f"\nHere is the conversation so far:\n{conversation_history_text}"
                 f"\nNow respond as {conversation['ai_role']}."
                 )
 
-                
-                # Generate AI response
-                ai_text = generate_response(prompt)
+                # Generate AI response using AI service
+                ai_text = ai_service.generate_ai_response(prompt)
                 
                 # Store AI response
                 ai_message =  Message(conversation_id=ObjectId(conversation_id), sender="ai", content=ai_text)

@@ -9,9 +9,15 @@ from datetime import datetime
 from app.config.database import db
 from app.utils.auth import get_current_user
 from app.utils.tts_client_service import get_speech_from_tts_service
+from app.services.tts_service import TTSService
+from app.services.conversation_service import ConversationService
 
 # Set up logger
 logger = logging.getLogger(__name__)
+
+# Initialize services
+tts_service = TTSService()
+conversation_service = ConversationService()
 
 # Create router instance
 router = APIRouter()
@@ -33,22 +39,28 @@ async def get_ai_message_as_speech_stream(
         start = time.time()
         
         logger.info(f"Getting AI message audio stream for message_id: {message_id}")
-        message_object_id = ObjectId(message_id) # Convert string ID to ObjectId for MongoDB query
+        
+        # Get message data
+        message_object_id = ObjectId(message_id)
         message = db.messages.find_one({"_id": message_object_id})
-        Conversation = db.conversations.find_one({"_id": message["conversation_id"]})
-        conversation_voice_type = Conversation["voice_type"]
-        end = time.time()
-        logger.info(f"Time taken to fetch message and conversation: {end - start} seconds")
         if not message:
             raise HTTPException(status_code=404, detail="Message not found")
 
-        # 2. Basic validation (optional but good)
+        # Validate message is from AI
         if message.get("sender") != "ai":
             raise HTTPException(status_code=400, detail="Speech can only be generated for AI messages")
 
         ai_text = message.get("content")
         if not ai_text:
             raise HTTPException(status_code=400, detail="AI Message has no text content to synthesize")
+
+        # Get conversation context to retrieve voice type
+        conversation_id = str(message["conversation_id"])
+        conversation_context = conversation_service.get_conversation_context(conversation_id)
+        conversation_voice_type = conversation_context["conversation"]["voice_type"]
+        
+        end = time.time()
+        logger.info(f"Time taken to fetch message and conversation: {end - start} seconds")
 
         default_lang_code = "en-US"     # Example: set to your primary language
         default_model_name = "kokoro"   # From your TTS API example
@@ -124,36 +136,29 @@ async def get_voice_context(
     both the voice type to use and the latest AI message that might need to be played.
     """
     try:
-        # Convert string ID to ObjectId for MongoDB query
+        # Get message and validate
         message_object_id = ObjectId(message_id)
-        
-        # Find the message
         message = db.messages.find_one({"_id": message_object_id})
         if not message:
             logger.warning(f"Message not found: {message_id}")
             raise HTTPException(status_code=404, detail="Message not found")
         
-        # Get the conversation
-        conversation_id = message["conversation_id"]
-        conversation = db.conversations.find_one({"_id": conversation_id})
-        if not conversation:
-            logger.warning(f"Conversation not found for message: {message_id}")
-            raise HTTPException(status_code=404, detail="Conversation not found")
+        # Get conversation context using service
+        conversation_id = str(message["conversation_id"])
+        conversation_context = conversation_service.get_conversation_context(conversation_id)
+        conversation = conversation_context["conversation"]
+        messages = conversation_context["messages"]
         
         # Get the voice type from the conversation
-        voice_type = conversation.get("voice_type", "hm_omega")  # Default to hm_omega if not found
+        voice_type = conversation.get("voice_type", "hm_omega")
         
-        # Find the latest AI message in the conversation
-        latest_ai_message = db.messages.find(
-            {"conversation_id": conversation_id, "sender": "ai"}
-        ).sort("timestamp", -1).limit(1)
-        
-        latest_ai_message_list = list(latest_ai_message)
+        # Find the latest AI message from the messages
+        ai_messages = [msg for msg in messages if msg.get("sender") == "ai"]
         latest_ai_message_data = None
-        is_latest = False
         
-        if latest_ai_message_list:
-            latest_msg = latest_ai_message_list[0]
+        if ai_messages:
+            # Get the most recent AI message (messages are sorted by timestamp)
+            latest_msg = ai_messages[-1]
             latest_ai_message_data = {
                 "id": str(latest_msg["_id"]),
                 "content": latest_msg.get("content", ""),

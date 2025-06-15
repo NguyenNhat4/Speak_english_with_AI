@@ -29,6 +29,7 @@ from app.utils.audio_processor import (
     generate_feedback
 )
 from app.utils.transcription_error_message import TranscriptionErrorMessages
+from app.services.audio_service import AudioService
 
 # Set up logger
 logger = logging.getLogger(__name__)
@@ -66,66 +67,69 @@ async def turn_to_text(
             - transcription: The transcribed text or an error message
             - success: Boolean indicating whether transcription was successful
     """
-    # Initialize services
-    from app.utils.speech_service import SpeechService
-    speech_service = SpeechService()
+    # Initialize audio service
+    audio_service = AudioService()
     user_id = str(current_user["_id"])
     
-    # Step 1: Try to transcribe the audio from a temporary file
-    transcription, temp_file_path = speech_service.transcribe_from_upload(audio_file)
-    
-    # Step 2: Check if transcription was successful
-    transcription_successful = transcription != TranscriptionErrorMessages.DEFAULT_FALLBACK_ERROR.value and transcription != TranscriptionErrorMessages.EMPTY_TRANSCRIPTION.value
-    
-    # Step 3: If transcription was successful, save the file permanently
-    if transcription_successful:
-        try:
-            # Reset file pointer to beginning of file for save operation
-            audio_file.file.seek(0)
-            
-            # Now save the audio file permanently since transcription was successful
-            file_path, audio_model = speech_service.save_audio_file(audio_file, user_id)
-            audio_id = str(audio_model._id)
-            
-            # Update audio record with transcription
-            db.audio.update_one(
-                {"_id": ObjectId(audio_id)},
-                {"$set": {"transcription": transcription, "has_error": False}}
-            )
-            
-            # Clean up the temporary file since we've saved it properly now
-            import os
-            if temp_file_path and os.path.exists(temp_file_path):
-                os.unlink(temp_file_path)
+    try:
+        # Step 1: Transcribe the audio file
+        transcription, temp_file_path = audio_service.transcribe_audio(audio_file)
+        
+        # Step 2: Process audio for feedback and check success
+        processing_result = audio_service.process_audio_for_feedback(
+            transcription=transcription,
+            user_id=user_id,
+            conversation_id="",  # Not linked to conversation yet
+            audio_id=None
+        )
+        
+        # Step 3: If transcription was successful, save the file permanently
+        if processing_result["success"]:
+            try:
+                # Reset file pointer to beginning of file for save operation
+                audio_file.file.seek(0)
                 
-            # Return success response
-            return {
-                "audio_id": audio_id,
-                "transcription": transcription,
-                "success": True
-            }
-            
-        except Exception as e:
-            logger.error(f"Error saving audio after successful transcription: {str(e)}")
-            # Even if saving fails, return the transcription to the user
+                # Save the audio file permanently
+                audio_id = audio_service.save_audio_file(audio_file, user_id)
+                
+                # Update the processing result with audio_id
+                processing_result["audio_id"] = audio_id
+                
+                # Clean up temporary file
+                audio_service.cleanup_temp_file(temp_file_path)
+                
+                return {
+                    "audio_id": audio_id,
+                    "transcription": transcription,
+                    "success": True
+                }
+                
+            except Exception as e:
+                logger.error(f"Error saving audio after successful transcription: {str(e)}")
+                # Even if saving fails, return the transcription to the user
+                audio_service.cleanup_temp_file(temp_file_path)
+                return {
+                    "audio_id": None,
+                    "transcription": transcription,
+                    "success": True,
+                    "warning": "Transcription successful but audio storage failed"
+                }
+        else:
+            # Transcription failed - clean up temp file and return error
+            audio_service.cleanup_temp_file(temp_file_path)
             return {
                 "audio_id": None,
                 "transcription": transcription,
-                "success": True,
-                "warning": "Transcription successful but audio storage failed"
+                "success": False
             }
-    else:
-        # Transcription failed - clean up temp file and return error
-        if temp_file_path:
-            import os
-            if os.path.exists(temp_file_path):
-                os.unlink(temp_file_path)
-                
-        # Return error response with consistent format
+            
+    except Exception as e:
+        logger.error(f"Error in audio transcription endpoint: {str(e)}")
         return {
             "audio_id": None,
-            "transcription": transcription,
-            "success": False
+            "transcription": "Error processing audio file",
+            "success": False,
+            "error": str(e)
         }
 
 
