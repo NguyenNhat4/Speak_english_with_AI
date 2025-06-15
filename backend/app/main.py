@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Depends
 from fastapi.staticfiles import StaticFiles
 from app.routes import user, conversation, image_description
+from app.routes import conversation_routes, audio_routes, message_routes, tts_routes
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.openapi.models import SecurityScheme
 from fastapi.security import OAuth2PasswordBearer
@@ -36,6 +37,22 @@ app = FastAPI(
         {
             "name": "conversations",
             "description": "Operations with conversations. Requires authentication."
+        },
+        {
+            "name": "audio",
+            "description": "Operations for audio processing and speech-to-text conversion."
+        },
+        {
+            "name": "messages",
+            "description": "Operations for message handling and AI responses."
+        },
+        {
+            "name": "tts",
+            "description": "Operations for text-to-speech conversion and voice context."
+        },
+        {
+            "name": "images",
+            "description": "Operations for image processing and description."
         },
         {
             "name": "feedback",
@@ -76,9 +93,30 @@ app.include_router(
 )
 
 app.include_router(
-    conversation.router,
+    conversation_routes.router,
     prefix="/api",
     tags=["conversations"],
+    responses={401: {"description": "Unauthorized"}}
+)
+
+app.include_router(
+    audio_routes.router,
+    prefix="/api",
+    tags=["audio"],
+    responses={401: {"description": "Unauthorized"}}
+)
+
+app.include_router(
+    message_routes.router,
+    prefix="/api",
+    tags=["messages"],
+    responses={401: {"description": "Unauthorized"}}
+)
+
+app.include_router(
+    tts_routes.router,
+    prefix="/api",
+    tags=["tts"],
     responses={401: {"description": "Unauthorized"}}
 )
 
